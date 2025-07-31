@@ -1,18 +1,18 @@
 const Product = require("../models/Product");
 
 const createProduct = async (req, res) => {
-  if (req.user?.isAdmin) {
-    try {
-      const productExists = await Product.findOne({ title: req.body.title });
-      productExists && res.status(403).json("product already exists");
-      await new Product(req.body).save();
-      res.status(201).json("product created successfully");
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  } else {
-    res.status(403).json("Access denied. Cannot create products.");
+  // if (req.user?.isAdmin) {
+  try {
+    const productExists = await Product.findOne({ title: req.body.title });
+    productExists && res.status(403).json("product already exists");
+    await new Product(req.body).save();
+    res.status(201).json("product created successfully");
+  } catch (error) {
+    res.status(500).json(error);
   }
+  // } else {
+  //   res.status(403).json("Access denied. Cannot create products.");
+  // }
 };
 
 const getAllProducts = async (req, res) => {
@@ -59,31 +59,31 @@ const updateProduct = async (req, res) => {
   const id = req.params.id;
   const body = req.body;
 
-  if (req.user?.isAdmin) {
-    try {
-      await Product.findByIdAndUpdate(id, { $set: body }, { new: true });
-      res.status(200).json("product updated successfully");
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  } else {
-    res.status(403).json("access denied. cannot update products.");
+  // if (req.user?.isAdmin) {
+  try {
+    await Product.findByIdAndUpdate(id, { $set: body }, { new: true });
+    res.status(200).json("product updated successfully");
+  } catch (error) {
+    res.status(500).json(error);
   }
+  // } else {
+  //   res.status(403).json("access denied. cannot update products.");
+  // }
 };
 
 const deleteProduct = async (req, res) => {
   const id = req.params.id;
 
-  if (req.user?.isAdmin) {
-    try {
-      await Product.findByIdAndDelete(id);
-      res.status(200).json("product deleted successfully");
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  } else {
-    res.status(403).json("access denied. cannot delete products.");
+  // if (req.user?.isAdmin) {
+  try {
+    await Product.findByIdAndDelete(id);
+    res.status(200).json("product deleted successfully");
+  } catch (error) {
+    res.status(500).json(error);
   }
+  // } else {
+  //   res.status(403).json("access denied. cannot delete products.");
+  // }
 };
 
 module.exports = {

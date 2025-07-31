@@ -9,11 +9,14 @@ const {
   deleteProduct,
 } = require("../controllers/productController");
 
-router.route("/").post(verify, createProduct).get(getAllProducts);
+router.route("/").post(createProduct).get(getAllProducts);
+// router.route("/").post(verify, createProduct).get(getAllProducts);
 router
   .route("/:id")
   .get(getOneProduct)
-  .put(verify, updateProduct)
-  .delete(verify, deleteProduct);
+  .put(updateProduct)
+  .delete(deleteProduct);
+// .put(verify, updateProduct)
+// .delete(verify, deleteProduct);
 
 module.exports = router;

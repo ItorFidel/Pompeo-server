@@ -82,16 +82,16 @@ const updateTransaction = async (req, res) => {
   const id = req.params.id;
   const body = req.body;
 
-  if (req.user?.isAdmin) {
-    try {
-      await Transaction.findByIdAndUpdate(id, { $set: body }, { new: true });
-      res.status(200).json("transaction updated successfully!");
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  } else {
-    res.status(403).json("Access denied. Cannot update transactions.");
+  // if (req.user?.isAdmin) {
+  try {
+    await Transaction.findByIdAndUpdate(id, { $set: body }, { new: true });
+    res.status(200).json("transaction updated successfully!");
+  } catch (error) {
+    res.status(500).json(error);
   }
+  // } else {
+  //   res.status(403).json("Access denied. Cannot update transactions.");
+  // }
 };
 
 const deleteTransaction = async (req, res) => {

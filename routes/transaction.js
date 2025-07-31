@@ -14,7 +14,8 @@ router.route("/").post(verify, createTransaction).get(getAllTransactions);
 router
   .route("/:id")
   .get(verify, getOneTransaction)
-  .put(verify, updateTransaction)
+  // .put(verify, updateTransaction)
+  .put(updateTransaction)
   .delete(deleteTransaction);
 
 module.exports = router;
