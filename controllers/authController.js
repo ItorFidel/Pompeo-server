@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password: reqPassword, keepSignedIn } = req.body;
 
-  if (!email || !reqPassword) {
+  if (!email && !reqPassword) {
     res
       .status(400)
       .json({ type: "stdError", message: "Please enter all fields" });
