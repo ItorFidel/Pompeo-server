@@ -6,12 +6,6 @@ const createUser = async (req, res) => {
   const { email, username, password } = req.body;
 
   try {
-    // if (Object.values(req.body).some((value) => value == "")) {
-    //   res
-    //     .status(400)
-    //     .json({ type: "stdError", message: "Please enter all fields" });
-    // }
-
     const emailExists = await User.findOne({ email });
     emailExists &&
       res
@@ -149,12 +143,10 @@ const loginAdmin = async (req, res) => {
       res.status(500).json(error);
     }
   } else {
-    res
-      .status(401)
-      .json({
-        type: "adminError",
-        message: "Only admin users can login here.",
-      });
+    res.status(401).json({
+      type: "adminError",
+      message: "Only admin users can login here.",
+    });
   }
 };
 
