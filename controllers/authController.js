@@ -7,17 +7,19 @@ const createUser = async (req, res) => {
 
   try {
     const emailExists = await User.findOne({ email });
-    emailExists &&
-      res
+    if (emailExists) {
+      return res
         .status(403)
         .json({ type: "emailError", message: "email already exists" });
+    }
 
     const usernameExists = await User.findOne({ username });
-    usernameExists &&
-      res.status(403).json({
+    if (usernameExists) {
+      return res.status(403).json({
         type: "usernameError",
         message: "username already exists",
       });
+    }
 
     const encryptedPassword = CryptoJS.AES.encrypt(
       password,
@@ -37,14 +39,17 @@ const loginUser = async (req, res) => {
   const { email, password: reqPassword, keepSignedIn } = req.body;
 
   if (!email && !reqPassword) {
-    res
+    return res
       .status(400)
       .json({ type: "stdError", message: "Please enter all fields" });
   }
 
   const validUser = await User.findOne({ email });
-  !validUser &&
-    res.status(400).json({ type: "emailError", message: "Incorrect email" });
+  if (!validUser) {
+    return res
+      .status(400)
+      .json({ type: "emailError", message: "Incorrect email" });
+  }
 
   const validUserPassword = CryptoJS.AES.decrypt(
     validUser.password,
@@ -52,7 +57,7 @@ const loginUser = async (req, res) => {
   ).toString(CryptoJS.enc.Utf8);
 
   if (reqPassword !== validUserPassword) {
-    res
+    return res
       .status(400)
       .json({ type: "passwordError", message: "Incorrect password" });
   }
@@ -85,22 +90,24 @@ const loginUser = async (req, res) => {
       });
   } catch (error) {
     res.status(500).json(error);
-    return;
   }
 };
 
 const loginAdmin = async (req, res) => {
   const { email, password: reqPassword, keepSignedIn } = req.body;
 
-  if (!email || !reqPassword) {
-    res
+  if (!email && !reqPassword) {
+    return res
       .status(400)
       .json({ type: "stdError", message: "Please enter all fields" });
   }
 
   const validUser = await User.findOne({ email });
-  !validUser &&
-    res.status(400).json({ type: "emailError", message: "Incorrect email" });
+  if (!validUser) {
+    return res
+      .status(400)
+      .json({ type: "emailError", message: "Incorrect email" });
+  }
 
   const validUserPassword = CryptoJS.AES.decrypt(
     validUser.password,
@@ -108,7 +115,7 @@ const loginAdmin = async (req, res) => {
   ).toString(CryptoJS.enc.Utf8);
 
   if (reqPassword !== validUserPassword) {
-    res
+    return res
       .status(400)
       .json({ type: "passwordError", message: "Incorrect password" });
   }
