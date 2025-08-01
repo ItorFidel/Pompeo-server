@@ -34,7 +34,7 @@ const getAllProducts = async (req, res) => {
       }
     } else if (categoryQuery === "All" && homePageQuery) {
       products = await Product.find().limit(6);
-    } else if (categoryQuery === "All") {
+    } else if (!categoryQuery || categoryQuery === "All") {
       products = await Product.find();
     }
 
